@@ -1,6 +1,7 @@
 import {
   DATABASE_BENEFITS,
   DATABASE_SECTORS,
+  DATABASE_VACANCIES,
   EXPERIENCE_LEVELS
 } from './constants'
 
@@ -12,6 +13,7 @@ import { readJSON, writeToFile } from './utils/File'
 import { Employee } from './Employee'
 import { Benefit } from './Benefit'
 import { Sector } from './Sector'
+import { Vacancy } from './Vacancy'
 
 const createInitialText = (param: string) => `Digite ${param}: `
 
@@ -53,22 +55,25 @@ export class RhManager {
   }
 
   addSector() {
-    const name = Keyboard(createInitialText('Nome'))
-    const employeesQuantity = Number(
-      Keyboard(createInitialText('Quantidade de Funcionários'))
-    )
-
-    const newSector = new Sector({ name, employeesQuantity })
-
-    const currentSectors = readJSON(DATABASE_SECTORS)
-
-    let newSectors = [newSector]
-
-    if (currentSectors) {
-      newSectors = [...currentSectors, newSector]
-    }
-
-    writeToFile({ fileName: DATABASE_SECTORS, data: newSectors })
+    // const name = Keyboard(createInitialText('Nome'))
+    // const employeesQuantity = Number(
+    //   Keyboard(createInitialText('Quantidade de Funcionários'))
+    // )
+    // const newSector = new Sector({
+    //   name,
+    //   employeesQuantity,
+    //   id: name.toLowerCase().replaceAll(' ', '-')
+    // })
+    // const currentSectors = readJSON(DATABASE_SECTORS)
+    // let newSectors = [newSector]
+    // if (currentSectors) {
+    //   newSectors = [...currentSectors, newSector]
+    // }
+    // newSectors = newSectors.map(current => ({
+    //   ...current,
+    //   id: current.name.toLowerCase().replaceAll(' ', '-')
+    // }))
+    // writeToFile({ fileName: DATABASE_SECTORS, data: newSectors })
   }
 
   listSectors() {
@@ -149,6 +154,39 @@ export class RhManager {
     // })
 
     // console.log(newEmployee)
+  }
+
+  listVacancies() {}
+
+  addVacancy() {
+    const roleName = Keyboard(createInitialText('Nome do Cargo'))
+
+    const description = Keyboard(createInitialText('Descrição'))
+    const expirationDate = new Date(
+      Keyboard(createInitialText('Data de expiração da vaga'))
+    )
+
+    const quantity = Number(Keyboard(createInitialText('Quantidade de Vagas')))
+
+    this.listSectors()
+    const sector = Number(Keyboard(createInitialText('Nome do Setor do Cargo')))
+
+    // const newSector = new Vacancy({
+    //   quantity,
+    //   roleName,
+    //   description,
+    //   expirationDate
+    // })
+
+    // const currentSectors = readJSON(DATABASE_VACANCIES)
+
+    // let newSectors = [newSector]
+
+    // if (currentSectors) {
+    //   newSectors = [...currentSectors, newSector]
+    // }
+
+    // writeToFile({ fileName: DATABASE_VACANCIES, data: newSectors })
   }
 
   // listEmployees() {

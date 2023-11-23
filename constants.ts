@@ -1,5 +1,6 @@
 export const DATABASE_BENEFITS = 'database/benefits.json'
 export const DATABASE_SECTORS = 'database/sectors.json'
+export const DATABASE_VACANCIES = 'database/vacancies.json'
 
 export const EXPERIENCE_LEVELS = [
   {

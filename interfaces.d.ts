@@ -10,6 +10,7 @@ export interface EmployeeTypes {
   benefits: BenefitTypes[]
   phone: string
   jobStatus: number
+  atacar: (a: number, b: number) => number
 }
 
 export interface BenefitTypes {
@@ -22,6 +23,7 @@ export interface SectorTypes {
   name: string
   manager?: EmployeeTypes
   employeesQuantity: number
+  id: string
 }
 
 export type ExperienceLevelType = {
@@ -30,5 +32,11 @@ export type ExperienceLevelType = {
 }
 
 export type VacancyType = {
+  quantity: number
+  sector: SectorTypes
+  roleName: string
+  expirationDate?: Date
+  description: string
+  requirements: string[]
   status: number
 }

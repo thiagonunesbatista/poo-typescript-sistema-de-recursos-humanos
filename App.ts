@@ -39,6 +39,12 @@ while (isProgramExecuting) {
     case 21:
       manager.listSectors()
       break
+    case 30:
+      manager.addVacancy()
+      break
+    case 30:
+      manager.listVacancies()
+      break
     case 9:
     default:
       exitProgram()
