@@ -4,9 +4,11 @@ export class Sector implements SectorTypes {
   public name
   public manager
   public employeesQuantity
+  public id
 
-  constructor({ name, manager, employeesQuantity }: SectorTypes) {
+  constructor({ name, manager, employeesQuantity, id }: SectorTypes) {
     this.name = name
+    this.id = id
     this.employeesQuantity = employeesQuantity
 
     if (manager) {
