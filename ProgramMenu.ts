@@ -23,7 +23,7 @@ export class ProgramMenu {
     this.setChosenOption(Number(Keyboard('Escolha uma ação: ')))
   }
 
-  private setChosenOption(ogption: number) {
+  private setChosenOption(option: number) {
     this.chosenOption = option
   }
 
