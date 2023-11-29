@@ -2,10 +2,16 @@ import {
   DATABASE_BENEFITS,
   DATABASE_SECTORS,
   DATABASE_VACANCIES,
-  EXPERIENCE_LEVELS
+  EXPERIENCE_LEVELS,
+  DATABASE_EMPLOYEES
 } from './constants'
 
-import { BenefitTypes, ExperienceLevelType, SectorTypes } from './interfaces'
+import {
+  BenefitTypes,
+  EmployeeTypes,
+  ExperienceLevelType,
+  SectorTypes
+} from './interfaces'
 
 import { Keyboard } from './utils/Keyboard'
 import { readJSON, writeToFile } from './utils/File'
@@ -80,6 +86,20 @@ export class RhManager {
     writeToFile({ fileName: DATABASE_SECTORS, data: newSectors })
   }
 
+  getSingleSector(sectorName: string) {
+    const sectors = readJSON(DATABASE_SECTORS)
+
+    const foundSector = sectors.find((currentSector: SectorTypes) => {
+      if (
+        currentSector.name.toLowerCase() === sectorName.toLowerCase().trim()
+      ) {
+        return currentSector
+      }
+    })
+
+    return new Sector(foundSector)
+  }
+
   listSectors() {
     const sectors = readJSON(DATABASE_SECTORS)
 
@@ -96,6 +116,18 @@ export class RhManager {
         `
       )
     })
+  }
+
+  writeEmployeeToFile(newEmployee: EmployeeTypes) {
+    const currentEmployeeList = readJSON(DATABASE_EMPLOYEES)
+
+    let newEmployeesList = [newEmployee]
+
+    if (currentEmployeeList) {
+      newEmployeesList = [...currentEmployeeList, newEmployee]
+    }
+
+    writeToFile({ fileName: DATABASE_EMPLOYEES, data: newEmployeesList })
   }
 
   hireEmployee() {
@@ -119,8 +151,15 @@ export class RhManager {
     const salary = Number(Keyboard(createInitialText('Salário')))
     const cltNumber = Keyboard(createInitialText('Número CLT'))
 
+    this.listSectors()
+    const sectorName = Keyboard(createInitialText('Nome do Setor'))
+
+    const sector = this.getSingleSector(sectorName)
+
     const levelId = Number(
-      Keyboard(createInitialText(`Nível de Experiência\n${experienceOptions}`))
+      Keyboard(
+        createInitialText(`Nível de Experiência\n${experienceOptions}\n`)
+      )
     )
 
     const foundLevel = EXPERIENCE_LEVELS.find(current => {
@@ -130,34 +169,31 @@ export class RhManager {
     })
 
     let level = foundLevel === undefined ? '' : foundLevel.title
-    //sector, role, benefits, job Status
 
-    console.log(level)
+    const role = Keyboard(createInitialText('Cargo'))
 
-    const sector = ''
+    const phone = Keyboard(createInitialText('Telefone'))
+    const jobStatus = Number(
+      Keyboard(createInitialText('Status\n: 1 - Férias\n2 - Trabalhando\n'))
+    )
 
-    const role = ''
-    const benefits = []
-    const phone = ''
-    const jobStatus = 1
+    const newEmployee = new Employee({
+      name,
+      cpf,
+      entryDate,
+      salary,
+      cltNumber,
+      level,
+      sector,
+      role,
+      benefits: [],
+      phone,
+      jobStatus
+    })
 
-    // level ? level.title : ''
-
-    // const newEmployee = new Employee({
-    //   name,
-    //   cpf,
-    //   entryDate,
-    //   salary,
-    //   cltNumber,
-    //   level,
-    //   sector,
-    //   role,
-    //   benefits,
-    //   phone,
-    //   jobStatus
-    // })
-
-    // console.log(newEmployee)
+    this.writeEmployeeToFile(newEmployee)
+    console.log('newEmployee')
+    console.log(newEmployee)
   }
 
   listVacancies() {}

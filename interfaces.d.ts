@@ -5,12 +5,11 @@ export interface EmployeeTypes {
   salary: number
   cltNumber: string
   sector: SectorTypes
-  role: 'string'
+  role: string
   level: string
   benefits: BenefitTypes[]
   phone: string
   jobStatus: number
-  atacar: (a: number, b: number) => number
 }
 
 export interface BenefitTypes {
