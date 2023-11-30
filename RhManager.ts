@@ -14,9 +14,8 @@ import {
   VacancyType
 } from './interfaces'
 
-import { Keyboard } from './utils/Keyboard'
-
 import { File as FileClass } from './File'
+import { Keyboard as KeyboardClass } from './Keyboard'
 import { Employee } from './Employee'
 import { Benefit } from './Benefit'
 import { Sector } from './Sector'
@@ -25,12 +24,16 @@ import { Vacancy } from './Vacancy'
 const createInitialText = (param: string) => `Digite ${param}: `
 
 const File = new FileClass()
-
+const Keyboard = new KeyboardClass()
 export class RhManager {
+  raiseSalary() {
+    console.log('raiseSalary')
+  }
+
   addBenefit() {
-    const name = Keyboard(createInitialText('Nome'))
-    const value = Number(Keyboard(createInitialText('Valor')))
-    const description = Keyboard(createInitialText('Descrição'))
+    const name = Keyboard.read(createInitialText('Nome'))
+    const value = Keyboard.readNumber(createInitialText('Valor'))
+    const description = Keyboard.read(createInitialText('Descrição'))
 
     const newBenefit = new Benefit({ description, name, value })
 
@@ -64,9 +67,9 @@ export class RhManager {
   }
 
   addSector() {
-    const name = Keyboard(createInitialText('Nome'))
+    const name = Keyboard.read(createInitialText('Nome'))
     const employeesQuantity = Number(
-      Keyboard(createInitialText('Quantidade de Funcionários'))
+      Keyboard.read(createInitialText('Quantidade de Funcionários'))
     )
 
     const newSector = new Sector({
@@ -175,19 +178,21 @@ export class RhManager {
       ''
     )
 
-    const name = Keyboard(createInitialText('nome'))
-    const cpf = Keyboard(createInitialText('CPF'))
-    const entryDate = new Date(Keyboard(createInitialText('Data de Entrada')))
-    const salary = Number(Keyboard(createInitialText('Salário')))
-    const cltNumber = Keyboard(createInitialText('Número CLT'))
+    const name = Keyboard.read(createInitialText('nome'))
+    const cpf = Keyboard.read(createInitialText('CPF'))
+    const entryDate = new Date(
+      Keyboard.read(createInitialText('Data de Entrada'))
+    )
+    const salary = Keyboard.readNumber(createInitialText('Salário'))
+    const cltNumber = Keyboard.read(createInitialText('Número CLT'))
 
     this.listSectors()
-    const sectorName = Keyboard(createInitialText('Nome do Setor'))
+    const sectorName = Keyboard.read(createInitialText('Nome do Setor'))
 
     const sector = this.getSingleSector(sectorName)
 
     const levelId = Number(
-      Keyboard(
+      Keyboard.read(
         createInitialText(`Nível de Experiência\n${experienceOptions}\n`)
       )
     )
@@ -200,11 +205,13 @@ export class RhManager {
 
     let level = foundLevel === undefined ? '' : foundLevel.title
 
-    const role = Keyboard(createInitialText('Cargo'))
+    const role = Keyboard.read(createInitialText('Cargo'))
 
-    const phone = Keyboard(createInitialText('Telefone'))
+    const phone = Keyboard.read(createInitialText('Telefone'))
     const jobStatus = Number(
-      Keyboard(createInitialText('Status\n: 1 - Férias\n2 - Trabalhando\n'))
+      Keyboard.read(
+        createInitialText('Status\n: 1 - Férias\n2 - Trabalhando\n')
+      )
     )
 
     const newEmployee = new Employee({
@@ -227,7 +234,7 @@ export class RhManager {
   fireEmployee() {
     this.listEmployees()
 
-    const employeeNameToFire = Keyboard(
+    const employeeNameToFire = Keyboard.read(
       createInitialText('Nome do empregado a demitir')
     )
 
@@ -281,15 +288,19 @@ export class RhManager {
   }
 
   addVacancy() {
-    const roleName = Keyboard(createInitialText('Nome do Cargo'))
-    const quantity = Number(Keyboard(createInitialText('Quantidade de Vagas')))
-    const description = Keyboard(createInitialText('Descrição'))
+    const roleName = Keyboard.read(createInitialText('Nome do Cargo'))
+    const quantity = Keyboard.readNumber(
+      createInitialText('Quantidade de Vagas')
+    )
+    const description = Keyboard.read(createInitialText('Descrição'))
     const expirationDate = new Date(
-      Keyboard(createInitialText('Data de expiração da vaga'))
+      Keyboard.read(createInitialText('Data de expiração da vaga'))
     )
 
     this.listSectors()
-    const sectorName = Keyboard(createInitialText('Nome do Setor do cargo'))
+    const sectorName = Keyboard.read(
+      createInitialText('Nome do Setor do cargo')
+    )
 
     const sector = this.getSingleSector(sectorName)
 

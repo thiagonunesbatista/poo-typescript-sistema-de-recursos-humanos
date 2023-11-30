@@ -48,4 +48,8 @@ export class Employee extends Person implements EmployeeTypes {
       }
     }
   }
+
+  raiseSalary(raisePercentage: 5 | 10 | 20 | 30) {
+    this.salary += this.salary * (raisePercentage / 100)
+  }
 }

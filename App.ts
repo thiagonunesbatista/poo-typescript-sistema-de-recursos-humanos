@@ -28,33 +28,36 @@ while (isProgramExecuting) {
       manager.listEmployees()
       break
     case 4:
-      manager.addBenefit()
-      break
-    case 5:
-      manager.listBenefits()
-      break
-    //case 6:
-    // manager.EditBenefits()
-    // break
-    //case 7:
-    // manager.DeleteBenefits()
-    // break
-    case 8:
-      manager.addSector()
-      break
-    case 9:
-      manager.listSectors()
+      manager.raiseSalary()
       break
     case 10:
-      manager.addVacancy()
+      manager.addBenefit()
       break
     case 11:
-      manager.listVacancies()
+      manager.listBenefits()
       break
     //case 12:
+    // manager.EditBenefits()
+    // break
+    //case 13:
+    // manager.DeleteBenefits()
+    // break
+    case 20:
+      manager.addSector()
+      break
+    case 21:
+      manager.listSectors()
+      break
+    case 30:
+      manager.addVacancy()
+      break
+    case 31:
+      manager.listVacancies()
+      break
+    //case 32:
     // manager.editVacancies()
     // break
-    case 13:
+    case 99:
     default:
       exitProgram()
       break
