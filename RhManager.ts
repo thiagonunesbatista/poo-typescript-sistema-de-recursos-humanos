@@ -15,14 +15,16 @@ import {
 } from './interfaces'
 
 import { Keyboard } from './utils/Keyboard'
-import { readJSON, writeToFile } from './utils/File'
 
+import { File as FileClass } from './File'
 import { Employee } from './Employee'
 import { Benefit } from './Benefit'
 import { Sector } from './Sector'
 import { Vacancy } from './Vacancy'
 
 const createInitialText = (param: string) => `Digite ${param}: `
+
+const File = new FileClass()
 
 export class RhManager {
   addBenefit() {
@@ -32,7 +34,7 @@ export class RhManager {
 
     const newBenefit = new Benefit({ description, name, value })
 
-    const currentBenefits = readJSON(DATABASE_BENEFITS)
+    const currentBenefits = File.readJSON(DATABASE_BENEFITS)
 
     let newBenefits = [newBenefit]
 
@@ -40,11 +42,11 @@ export class RhManager {
       newBenefits = [...currentBenefits, newBenefit]
     }
 
-    writeToFile({ fileName: DATABASE_BENEFITS, data: newBenefits })
+    File.write({ fileName: DATABASE_BENEFITS, data: newBenefits })
   }
 
   listBenefits() {
-    const benefits = readJSON(DATABASE_BENEFITS)
+    const benefits = File.readJSON(DATABASE_BENEFITS)
 
     if (!benefits) {
       console.log('Não há beneficios cadastrados')
@@ -73,7 +75,7 @@ export class RhManager {
       id: name.toLowerCase().replaceAll(' ', '-')
     })
 
-    const currentSectors = readJSON(DATABASE_SECTORS)
+    const currentSectors = File.readJSON(DATABASE_SECTORS)
 
     let newSectors = [newSector]
     if (currentSectors) {
@@ -84,11 +86,11 @@ export class RhManager {
       ...current,
       id: current.name.toLowerCase().replaceAll(' ', '-')
     }))
-    writeToFile({ fileName: DATABASE_SECTORS, data: newSectors })
+    File.write({ fileName: DATABASE_SECTORS, data: newSectors })
   }
 
   getSingleSector(sectorName: string) {
-    const sectors = readJSON(DATABASE_SECTORS)
+    const sectors = File.readJSON(DATABASE_SECTORS)
 
     const foundSector = sectors.find((currentSector: SectorTypes) => {
       if (
@@ -102,7 +104,7 @@ export class RhManager {
   }
 
   getSingleEmployee(employeeName: string) {
-    const employeesList = readJSON(DATABASE_EMPLOYEES)
+    const employeesList = File.readJSON(DATABASE_EMPLOYEES)
 
     const foundEmployee = employeesList.find((currentSector: SectorTypes) => {
       if (
@@ -111,15 +113,11 @@ export class RhManager {
         return currentSector
       }
     })
-
-    console.log('foundEmployee')
-    console.log(foundEmployee)
-
     return foundEmployee
   }
 
   listSectors() {
-    const sectors = readJSON(DATABASE_SECTORS)
+    const sectors = File.readJSON(DATABASE_SECTORS)
 
     if (!sectors) {
       console.log('Não há setores cadastrados')
@@ -137,7 +135,7 @@ export class RhManager {
   }
 
   deleteEmployeeFromFile(employeeToFire: EmployeeTypes) {
-    const currentEmployeeList = readJSON(DATABASE_EMPLOYEES)
+    const currentEmployeeList = File.readJSON(DATABASE_EMPLOYEES)
 
     const newEmployeesList = currentEmployeeList.filter(
       (current: EmployeeTypes) => {
@@ -147,11 +145,11 @@ export class RhManager {
       }
     )
 
-    writeToFile({ fileName: DATABASE_EMPLOYEES, data: newEmployeesList })
+    File.write({ fileName: DATABASE_EMPLOYEES, data: newEmployeesList })
   }
 
   writeEmployeeToFile(newEmployee: EmployeeTypes) {
-    const currentEmployeeList = readJSON(DATABASE_EMPLOYEES)
+    const currentEmployeeList = File.readJSON(DATABASE_EMPLOYEES)
 
     let newEmployeesList = [newEmployee]
 
@@ -159,7 +157,7 @@ export class RhManager {
       newEmployeesList = [...currentEmployeeList, newEmployee]
     }
 
-    writeToFile({ fileName: DATABASE_EMPLOYEES, data: newEmployeesList })
+    File.write({ fileName: DATABASE_EMPLOYEES, data: newEmployeesList })
   }
 
   hireEmployee() {
@@ -224,8 +222,6 @@ export class RhManager {
     })
 
     this.writeEmployeeToFile(newEmployee)
-    console.log('newEmployee')
-    console.log(newEmployee)
   }
 
   fireEmployee() {
@@ -235,15 +231,13 @@ export class RhManager {
       createInitialText('Nome do empregado a demitir')
     )
 
-    console.log(employeeNameToFire)
-
     const employeeInstanceToFire = this.getSingleEmployee(employeeNameToFire)
 
     this.deleteEmployeeFromFile(employeeInstanceToFire)
   }
 
   listEmployees() {
-    const employeesList = readJSON(DATABASE_EMPLOYEES)
+    const employeesList = File.readJSON(DATABASE_EMPLOYEES)
 
     if (!employeesList) {
       console.log('Não há empregados cadastrados')
@@ -260,7 +254,7 @@ export class RhManager {
   }
 
   listVacancies() {
-    const vacancies = readJSON(DATABASE_VACANCIES)
+    const vacancies = File.readJSON(DATABASE_VACANCIES)
 
     if (!vacancies) {
       console.log('Não há vagas cadastradas')
@@ -269,15 +263,13 @@ export class RhManager {
 
     vacancies.forEach((currentVacancy: VacancyType) => {
       console.log(
-        `${currentVacancy.roleName}\n
-        ${currentVacancy.description}
-        \n\n`
+        `${currentVacancy.roleName}\n${currentVacancy.description}\n\n`
       )
     })
   }
 
   writeVacancyToFile(newVacancy: VacancyType) {
-    const currentVacancyList = readJSON(DATABASE_VACANCIES)
+    const currentVacancyList = File.readJSON(DATABASE_VACANCIES)
 
     let newVacanciesList = [newVacancy]
 
@@ -285,7 +277,7 @@ export class RhManager {
       newVacanciesList = [...currentVacancyList, newVacancy]
     }
 
-    writeToFile({ fileName: DATABASE_VACANCIES, data: newVacanciesList })
+    File.write({ fileName: DATABASE_VACANCIES, data: newVacanciesList })
   }
 
   addVacancy() {
