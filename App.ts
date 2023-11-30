@@ -21,12 +21,12 @@ while (isProgramExecuting) {
     case 1:
       manager.hireEmployee()
       break
-    // case 2:
-    //   manager.fireEmployee()
-    //   break
-    // case 3:
-    //   manager.listEmployees()
-    //   break
+    case 2:
+      manager.fireEmployee()
+      break
+    case 3:
+      manager.listEmployees()
+      break
     case 4:
       manager.addBenefit()
       break

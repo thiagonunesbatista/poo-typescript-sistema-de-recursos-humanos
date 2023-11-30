@@ -4,7 +4,6 @@ export class Vacancy implements VacancyType {
   public quantity
   public sector
   public description
-  public requirements
   public roleName
   public status
   public expirationDate
@@ -13,7 +12,6 @@ export class Vacancy implements VacancyType {
     quantity,
     sector,
     description,
-    requirements,
     roleName,
     status,
     expirationDate
@@ -21,7 +19,6 @@ export class Vacancy implements VacancyType {
     this.quantity = quantity
     this.sector = sector
     this.description = description
-    this.requirements = requirements
     this.roleName = roleName
     this.status = status
     this.expirationDate = expirationDate

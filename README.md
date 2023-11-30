@@ -2,21 +2,28 @@
 
 ## Features
 
-### Benefits - Thiago
+### Benefits
 
 ✅ Create
 ✅ Read
 ❌ Update - Natália
 ❌ Delete - Natália
 
-### Sectors - Thiago
+### Sectors
 
 ✅ Create
 ✅ Read
 
-### Employee - Thiago
+### Employee
 
-### Vacancy - Natália
+✅ Create
+✅ Read
+✅ Delete
+
+### Vacancy
+
+✅ Create
+✅ Read
 
 ## Commands
 

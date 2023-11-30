@@ -36,6 +36,5 @@ export type VacancyType = {
   roleName: string
   expirationDate?: Date
   description: string
-  requirements: string[]
   status: number
 }

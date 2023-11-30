@@ -10,7 +10,8 @@ import {
   BenefitTypes,
   EmployeeTypes,
   ExperienceLevelType,
-  SectorTypes
+  SectorTypes,
+  VacancyType
 } from './interfaces'
 
 import { Keyboard } from './utils/Keyboard'
@@ -100,6 +101,23 @@ export class RhManager {
     return new Sector(foundSector)
   }
 
+  getSingleEmployee(employeeName: string) {
+    const employeesList = readJSON(DATABASE_EMPLOYEES)
+
+    const foundEmployee = employeesList.find((currentSector: SectorTypes) => {
+      if (
+        currentSector.name.toLowerCase() === employeeName.toLowerCase().trim()
+      ) {
+        return currentSector
+      }
+    })
+
+    console.log('foundEmployee')
+    console.log(foundEmployee)
+
+    return foundEmployee
+  }
+
   listSectors() {
     const sectors = readJSON(DATABASE_SECTORS)
 
@@ -116,6 +134,20 @@ export class RhManager {
         `
       )
     })
+  }
+
+  deleteEmployeeFromFile(employeeToFire: EmployeeTypes) {
+    const currentEmployeeList = readJSON(DATABASE_EMPLOYEES)
+
+    const newEmployeesList = currentEmployeeList.filter(
+      (current: EmployeeTypes) => {
+        if (current.name !== employeeToFire.name) {
+          return current
+        }
+      }
+    )
+
+    writeToFile({ fileName: DATABASE_EMPLOYEES, data: newEmployeesList })
   }
 
   writeEmployeeToFile(newEmployee: EmployeeTypes) {
@@ -196,46 +228,90 @@ export class RhManager {
     console.log(newEmployee)
   }
 
-  listVacancies() {}
+  fireEmployee() {
+    this.listEmployees()
 
-  addVacancy() {
-    // const roleName = Keyboard(createInitialText('Nome do Cargo'))
+    const employeeNameToFire = Keyboard(
+      createInitialText('Nome do empregado a demitir')
+    )
 
-    // const description = Keyboard(createInitialText('Descrição'))
-    // const expirationDate = new Date(
-    //   Keyboard(createInitialText('Data de expiração da vaga'))
-    // )
+    console.log(employeeNameToFire)
 
-    // const quantity = Number(Keyboard(createInitialText('Quantidade de Vagas')))
+    const employeeInstanceToFire = this.getSingleEmployee(employeeNameToFire)
 
-    // const sector = Number(Keyboard(createInitialText('Nome do Setor do Cargo')))
-
-    const currentVacancies = readJSON(DATABASE_VACANCIES)
-
-    const newSectors = []
-
-    // writeToFile({ fileName: DATABASE_VACANCIES, data: newSectors })
+    this.deleteEmployeeFromFile(employeeInstanceToFire)
   }
 
-  // listEmployees() {
-  //   const employeesList = readJSON(DATABASE_)
+  listEmployees() {
+    const employeesList = readJSON(DATABASE_EMPLOYEES)
 
-  //   if (!employeesList) {
-  //     console.log('Não há setores cadastrados')
-  //     return
-  //   }
+    if (!employeesList) {
+      console.log('Não há empregados cadastrados')
+      return
+    }
 
-  //   employeesList.forEach((currentSector: SectorTypes) => {
-  //     console.log(
-  //       `
-  //       Setor: ${currentSector.name}\n
-  //       Quantidade de funcionários: ${currentSector.employeesQuantity}\n
-  //       `
-  //     )
-  //   })
-  // }
+    employeesList.forEach((currentEmployee: EmployeeTypes) => {
+      console.log(
+        `
+        Nome: ${currentEmployee.name}\nCargo: ${currentEmployee.role}\n\n
+        `
+      )
+    })
+  }
 
-  // fireEmployee() {
-  //   // const employessList
-  // }
+  listVacancies() {
+    const vacancies = readJSON(DATABASE_VACANCIES)
+
+    if (!vacancies) {
+      console.log('Não há vagas cadastradas')
+      return
+    }
+
+    vacancies.forEach((currentVacancy: VacancyType) => {
+      console.log(
+        `${currentVacancy.roleName}\n
+        ${currentVacancy.description}
+        \n\n`
+      )
+    })
+  }
+
+  writeVacancyToFile(newVacancy: VacancyType) {
+    const currentVacancyList = readJSON(DATABASE_VACANCIES)
+
+    let newVacanciesList = [newVacancy]
+
+    if (currentVacancyList) {
+      newVacanciesList = [...currentVacancyList, newVacancy]
+    }
+
+    writeToFile({ fileName: DATABASE_VACANCIES, data: newVacanciesList })
+  }
+
+  addVacancy() {
+    const roleName = Keyboard(createInitialText('Nome do Cargo'))
+    const quantity = Number(Keyboard(createInitialText('Quantidade de Vagas')))
+    const description = Keyboard(createInitialText('Descrição'))
+    const expirationDate = new Date(
+      Keyboard(createInitialText('Data de expiração da vaga'))
+    )
+
+    this.listSectors()
+    const sectorName = Keyboard(createInitialText('Nome do Setor do cargo'))
+
+    const sector = this.getSingleSector(sectorName)
+
+    const status = 1
+
+    const newVacancy = new Vacancy({
+      roleName,
+      quantity,
+      description,
+      expirationDate,
+      sector,
+      status
+    })
+
+    this.writeVacancyToFile(newVacancy)
+  }
 }
