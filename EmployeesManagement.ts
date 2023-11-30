@@ -14,36 +14,38 @@ const sectorsManagement = new SectorsManagementClass()
 
 export class EmployeesManagement {
   raiseSalary() {
-    console.log('raiseSalary')
-  }
+    this.list()
 
-  fireEmployee() {
-    this.listEmployees()
-
-    const employeeNameToFire = Keyboard.read(
-      createInitialText('Nome do empregado a demitir')
+    const employeeNameToRaiseSalary = Keyboard.read(
+      createInitialText('Nome do empregado a aumentar salário')
     )
 
-    const employeeInstanceToFire = this.getSingleEmployee(employeeNameToFire)
+    const employeeInstance = this.getSingleEmployee(employeeNameToRaiseSalary)
+    const raiseOption = Keyboard.readNumber(
+      'Porcentagem a aumentar:\n1 - 5%\n2  - 10%\n3 - 20%\n'
+    )
 
-    this.deleteEmployeeFromFile(employeeInstanceToFire)
-  }
+    let salaryRaisePercentage
 
-  listEmployees() {
-    const employeesList = file.readJSON(DATABASE_EMPLOYEES)
-
-    if (!employeesList) {
-      console.log('Não há empregados cadastrados')
-      return
+    switch (raiseOption) {
+      case 1:
+        salaryRaisePercentage = 5 / 100
+        break
+      case 2:
+        salaryRaisePercentage = 10 / 100
+        break
+      case 3:
+        salaryRaisePercentage = 20 / 100
+        break
+      default:
+        salaryRaisePercentage = 0
     }
 
-    employeesList.forEach((currentEmployee: EmployeeTypes) => {
-      console.log(
-        `
-        Nome: ${currentEmployee.name}\nCargo: ${currentEmployee.role}\n\n
-        `
-      )
-    })
+    const salaryToAdd = employeeInstance.salary * salaryRaisePercentage
+
+    employeeInstance.addToSalary(salaryToAdd)
+
+    this.replaceEmployeeToFile(employeeInstance)
   }
 
   hire() {
@@ -103,10 +105,26 @@ export class EmployeesManagement {
       phone,
       jobStatus
     })
-    this.writeEmployeeToFile(newEmployee)
+    this.addEmployeeToFileEnd(newEmployee)
   }
 
-  private writeEmployeeToFile(newEmployee: EmployeeTypes) {
+  private replaceEmployeeToFile(employee: EmployeeTypes) {
+    const currentEmployeeList = file.readJSON(DATABASE_EMPLOYEES)
+
+    const newEmployeesList = currentEmployeeList.map(
+      (current: EmployeeTypes) => {
+        if (current.name !== employee.name) {
+          return current
+        }
+
+        return employee
+      }
+    )
+
+    file.write({ fileName: DATABASE_EMPLOYEES, data: newEmployeesList })
+  }
+
+  private addEmployeeToFileEnd(newEmployee: EmployeeTypes) {
     const currentEmployeeList = file.readJSON(DATABASE_EMPLOYEES)
 
     let newEmployeesList = [newEmployee]
@@ -175,6 +193,6 @@ export class EmployeesManagement {
       }
     )
 
-    return foundEmployee
+    return new Employee(foundEmployee)
   }
 }
