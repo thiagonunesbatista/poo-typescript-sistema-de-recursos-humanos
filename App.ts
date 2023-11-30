@@ -1,6 +1,9 @@
-import { RhManager } from './RhManager'
-
 import { ProgramMenu } from './ProgramMenu'
+
+import { EmployeesManagement as EmployeesManagementClass } from './EmployeesManagement'
+import { SectorsManagement as SectorsManagementClass } from './SectorsManagement'
+import { VacanciesManagement as VacanciesManagementClass } from './VacanciesManagement'
+// import { BenefitsManagement as BenefitsManagementClass } from './BenefitsManagement'
 
 const Menu = new ProgramMenu()
 
@@ -10,7 +13,10 @@ const exitProgram = () => {
   isProgramExecuting = false
 }
 
-const manager = new RhManager()
+const sectorsManagement = new SectorsManagementClass()
+const employeesManagement = new EmployeesManagementClass()
+const vacanciesManagement = new VacanciesManagementClass()
+// const benefitsManagement = new BenefitsManagementClass()
 
 while (isProgramExecuting) {
   Menu.show()
@@ -19,40 +25,40 @@ while (isProgramExecuting) {
 
   switch (menuChosenOption) {
     case 1:
-      manager.hireEmployee()
+      employeesManagement.hire()
       break
     case 2:
-      manager.fireEmployee()
+      employeesManagement.fire()
       break
     case 3:
-      manager.listEmployees()
+      employeesManagement.list()
       break
     case 4:
-      manager.raiseSalary()
+      employeesManagement.raiseSalary()
       break
-    case 10:
-      manager.addBenefit()
-      break
-    case 11:
-      manager.listBenefits()
-      break
-    //case 12:
-    // manager.EditBenefits()
-    // break
-    //case 13:
-    // manager.DeleteBenefits()
-    // break
+    // case 10:
+    //   benefitsManagement.add()
+    //   break
+    // case 11:
+    //   benefitsManagement.list()
+    //   break
+    // case 12:
+    //   benefitsManagement.edit()
+    //   break
+    // case 13:
+    //   benefitsManagement.delete()
+    //   break
     case 20:
-      manager.addSector()
+      sectorsManagement.add()
       break
     case 21:
-      manager.listSectors()
+      sectorsManagement.list()
       break
     case 30:
-      manager.addVacancy()
+      vacanciesManagement.add()
       break
     case 31:
-      manager.listVacancies()
+      vacanciesManagement.list()
       break
     //case 32:
     // manager.editVacancies()
