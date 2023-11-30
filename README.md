@@ -13,12 +13,14 @@
 
 ✅ Create
 ✅ Read
+✅ Update
 
 ### Employee
 
-✅ Create
-✅ Read
-✅ Delete
+✅ Create (Hire)
+✅ Read (List)
+✅ Delete (Fire)
+✅ Update (Salary)
 
 ### Vacancy
 

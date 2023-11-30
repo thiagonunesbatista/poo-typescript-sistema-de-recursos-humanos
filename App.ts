@@ -54,6 +54,9 @@ while (isProgramExecuting) {
     case 21:
       sectorsManagement.list()
       break
+    case 22:
+      sectorsManagement.update()
+      break
     case 30:
       vacanciesManagement.add()
       break

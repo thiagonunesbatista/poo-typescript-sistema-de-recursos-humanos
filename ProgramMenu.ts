@@ -17,6 +17,7 @@ export class ProgramMenu {
     console.log('| 13. Deletar Benefício           |')
     console.log('| 20. Criar Setor                 |')
     console.log('| 21. Listar Setores              |')
+    console.log('| 22. Atualizar Setor             |')
     console.log('| 30. Cadastrar Vaga              |')
     console.log('| 31. Listar Vagas                |')
     console.log('| 99. Sair                        |')

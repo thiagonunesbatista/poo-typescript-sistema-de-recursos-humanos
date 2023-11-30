@@ -1,5 +1,7 @@
+import { EmployeesManagement as EmployeesManagementClass } from './EmployeesManagement'
 import { File as FileClass } from './File'
 import { Keyboard as KeyboardClass } from './Keyboard'
+import { Management } from './Management'
 import { Sector } from './Sector'
 
 import { DATABASE_SECTORS } from './constants'
@@ -9,9 +11,10 @@ import { createInitialText } from './utils/text'
 import { SectorTypes } from './interfaces'
 
 const file = new FileClass()
+
 const Keyboard = new KeyboardClass()
 
-export class SectorsManagement {
+export class SectorsManagement extends Management {
   add() {
     const name = Keyboard.read(createInitialText('Nome'))
     const employeesQuantity = Number(
@@ -68,5 +71,50 @@ export class SectorsManagement {
         `
       )
     })
+  }
+
+  replaceOnFile(newSector: SectorTypes) {
+    const currentSectorList = file.readJSON(DATABASE_SECTORS)
+
+    const newSectorsList = currentSectorList.map((current: SectorTypes) => {
+      if (current.id !== newSector.id) {
+        return current
+      }
+
+      return newSector
+    })
+
+    file.write({ fileName: DATABASE_SECTORS, data: newSectorsList })
+  }
+
+  update() {
+    const employeesManagement = new EmployeesManagementClass()
+
+    this.list()
+
+    const name = Keyboard.read(createInitialText('Nome do setor'))
+
+    const sectorToUpdate = this.getSingleSector(name)
+
+    const newName = Keyboard.read(createInitialText('Novo Nome'))
+
+    const newEmployeesQuantity = Number(
+      Keyboard.read(createInitialText('Nova Quant'))
+    )
+
+    employeesManagement.list()
+
+    const managerName = Keyboard.read('Nome do Gerente: ')
+
+    const newManager = employeesManagement.getSingleEmployee(managerName)
+
+    const updatedSectorInstance = new Sector({
+      ...sectorToUpdate,
+      name: newName,
+      employeesQuantity: newEmployeesQuantity,
+      manager: newManager
+    })
+
+    this.replaceOnFile(updatedSectorInstance)
   }
 }

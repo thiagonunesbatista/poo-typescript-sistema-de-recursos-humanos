@@ -45,7 +45,7 @@ export class EmployeesManagement {
 
     employeeInstance.addToSalary(salaryToAdd)
 
-    this.replaceEmployeeToFile(employeeInstance)
+    this.replaceOnFile(employeeInstance)
   }
 
   hire() {
@@ -108,7 +108,7 @@ export class EmployeesManagement {
     this.addEmployeeToFileEnd(newEmployee)
   }
 
-  private replaceEmployeeToFile(employee: EmployeeTypes) {
+  private replaceOnFile(employee: EmployeeTypes) {
     const currentEmployeeList = file.readJSON(DATABASE_EMPLOYEES)
 
     const newEmployeesList = currentEmployeeList.map(
@@ -160,9 +160,7 @@ export class EmployeesManagement {
 
     employeesList.forEach((currentEmployee: EmployeeTypes) => {
       console.log(
-        `
-        Nome: ${currentEmployee.name}\nCargo: ${currentEmployee.role}\n\n
-        `
+        `Nome: ${currentEmployee.name}\nCargo: ${currentEmployee.role}\n\n`
       )
     })
   }
@@ -179,7 +177,7 @@ export class EmployeesManagement {
     this.deleteEmployeeFromFile(employeeInstanceToFire)
   }
 
-  private getSingleEmployee(employeeName: string) {
+  getSingleEmployee(employeeName: string) {
     const employeesList = file.readJSON(DATABASE_EMPLOYEES)
 
     const foundEmployee = employeesList.find(
