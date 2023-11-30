@@ -65,6 +65,34 @@ export class RhManager {
       )
     })
   }
+    
+  /*DeleteBenefits() {
+    const benefits = readJSON(DATABASE_BENEFITS);
+
+    if (!benefits) {
+      console.log('Não há benefícios cadastrados');
+      return;
+    }
+
+    console.log('Benefícios Disponíveis:');
+    benefits.forEach((benefit: BenefitTypes, index: number) => {
+      console.log(`${index + 1}. ${benefit.name}`);
+    });
+
+    const choice = Number(Keyboard('Escolha o benefício para excluir (digite o número): '));
+
+    if (isNaN(choice) || choice <= 0 || choice > benefits.length) {
+      console.log('Escolha inválida.');
+      return;
+    }
+
+    const benefitToDelete = benefits[choice - 1];
+    const updatedBenefits = benefits.filter((benefit: BenefitTypes) => benefit !== benefitToDelete);
+
+    writeToFile({ fileName: DATABASE_BENEFITS, data: updatedBenefits });
+    console.log(`O benefício "${benefitToDelete.name}" foi excluído com sucesso.`);
+  }*/
+
 
   addSector() {
     const name = Keyboard.read(createInitialText('Nome'))
