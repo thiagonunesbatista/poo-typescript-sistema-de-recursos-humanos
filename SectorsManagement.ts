@@ -117,4 +117,28 @@ export class SectorsManagement extends Management {
 
     this.replaceOnFile(updatedSectorInstance)
   }
+
+  private deleteFromFile(sectorToDelete: SectorTypes) {
+    const currentSectors = file.readJSON(DATABASE_SECTORS)
+
+    const newSectorsList = currentSectors.filter((current: SectorTypes) => {
+      if (current.id !== sectorToDelete.id) {
+        return current
+      }
+    })
+
+    file.write({ fileName: DATABASE_SECTORS, data: newSectorsList })
+  }
+
+  delete() {
+    this.list()
+
+    const sectorNameToDelete = Keyboard.read(
+      createInitialText('Nome setor a deletar')
+    )
+
+    const sectorInstanceToDelete = this.getSingleSector(sectorNameToDelete)
+
+    this.deleteFromFile(sectorInstanceToDelete)
+  }
 }

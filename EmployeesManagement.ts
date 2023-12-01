@@ -1,6 +1,7 @@
 import { Employee } from './Employee'
 import { File as FileClass } from './File'
 import { Keyboard as KeyboardClass } from './Keyboard'
+import { Management } from './Management'
 import { SectorsManagement as SectorsManagementClass } from './SectorsManagement'
 
 import { DATABASE_EMPLOYEES, EXPERIENCE_LEVELS } from './constants'
@@ -12,7 +13,8 @@ const file = new FileClass()
 const Keyboard = new KeyboardClass()
 const sectorsManagement = new SectorsManagementClass()
 
-export class EmployeesManagement {
+export class EmployeesManagement extends Management {
+  update() {}
   raiseSalary() {
     this.list()
 
@@ -48,7 +50,7 @@ export class EmployeesManagement {
     this.replaceOnFile(employeeInstance)
   }
 
-  hire() {
+  add() {
     const createInitialText = (param: string) => `Digite ${param}: `
     const getExperienceLevelsText = (
       accumulator: string,
@@ -165,7 +167,7 @@ export class EmployeesManagement {
     })
   }
 
-  fire() {
+  delete() {
     this.list()
 
     const employeeNameToFire = Keyboard.read(

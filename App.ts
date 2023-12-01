@@ -25,10 +25,10 @@ while (isProgramExecuting) {
 
   switch (menuChosenOption) {
     case 1:
-      employeesManagement.hire()
+      employeesManagement.add()
       break
     case 2:
-      employeesManagement.fire()
+      employeesManagement.delete()
       break
     case 3:
       employeesManagement.list()
@@ -56,6 +56,9 @@ while (isProgramExecuting) {
       break
     case 22:
       sectorsManagement.update()
+      break
+    case 23:
+      sectorsManagement.delete()
       break
     case 30:
       vacanciesManagement.add()
