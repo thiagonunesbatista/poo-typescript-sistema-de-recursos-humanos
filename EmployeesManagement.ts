@@ -14,7 +14,6 @@ const Keyboard = new KeyboardClass()
 const sectorsManagement = new SectorsManagementClass()
 
 export class EmployeesManagement extends Management {
-  update() {}
   raiseSalary() {
     this.list()
 
@@ -50,7 +49,7 @@ export class EmployeesManagement extends Management {
     this.replaceOnFile(employeeInstance)
   }
 
-  add() {
+  private createEmployeeFromInput() {
     const createInitialText = (param: string) => `Digite ${param}: `
     const getExperienceLevelsText = (
       accumulator: string,
@@ -105,8 +104,34 @@ export class EmployeesManagement extends Management {
       role,
       benefits: [],
       phone,
-      jobStatus
+      jobStatus,
+      id: name.toLowerCase().replaceAll(' ', '-')
     })
+
+    return newEmployee
+  }
+
+  update() {
+    this.list()
+
+    const employeeNameToUpdate = Keyboard.read(
+      createInitialText('Nome do empregado a atualizar')
+    )
+
+    const employeeToUpdate = this.getSingleEmployee(employeeNameToUpdate)
+
+    const updatedEmployee = this.createEmployeeFromInput()
+
+    const oldId = employeeToUpdate.id
+
+    const newEmployee = new Employee({ ...updatedEmployee, id: oldId })
+
+    this.replaceOnFile(newEmployee)
+  }
+
+  add() {
+    const newEmployee = this.createEmployeeFromInput()
+
     this.addEmployeeToFileEnd(newEmployee)
   }
 
@@ -115,7 +140,7 @@ export class EmployeesManagement extends Management {
 
     const newEmployeesList = currentEmployeeList.map(
       (current: EmployeeTypes) => {
-        if (current.name !== employee.name) {
+        if (current.id !== employee.id) {
           return current
         }
 

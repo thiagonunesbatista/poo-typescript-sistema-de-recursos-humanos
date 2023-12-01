@@ -1,6 +1,7 @@
 export interface PersonTypes {
   name: string
   cpf: string
+  id: string
 }
 
 export interface EmployeeTypes extends PersonTypes {

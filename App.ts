@@ -36,6 +36,9 @@ while (isProgramExecuting) {
     case 4:
       employeesManagement.raiseSalary()
       break
+    case 5:
+      employeesManagement.update()
+      break
     // case 10:
     //   benefitsManagement.add()
     //   break

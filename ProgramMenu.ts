@@ -11,6 +11,7 @@ export class ProgramMenu {
     console.log('| 02. Demitir Funcionário         |')
     console.log('| 03. Listar Funcionários         |')
     console.log('| 04. Aumentar Salário            |')
+    console.log('| 05. Editar Dados                |')
     console.log('| 10. Adicionar Benefício         |')
     console.log('| 11. Listar Benefícios           |')
     console.log('| 12. Editar Benefícios           |')

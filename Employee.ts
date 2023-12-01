@@ -25,9 +25,10 @@ export class Employee extends Person implements EmployeeTypes {
     role,
     level,
     benefits,
-    phone
+    phone,
+    id
   }: EmployeeTypes) {
-    super({ cpf, name })
+    super({ cpf, name, id })
 
     this.entryDate = entryDate
     this.cltNumber = cltNumber
