@@ -1,6 +1,10 @@
-export interface EmployeeTypes {
+export interface PersonTypes {
   name: string
   cpf: string
+  id: string
+}
+
+export interface EmployeeTypes extends PersonTypes {
   entryDate: Date
   salary: number
   cltNumber: string

@@ -1,9 +1,9 @@
+import { Person } from './Person'
+
 import { JOB_STATUS } from './constants'
 import { EmployeeTypes } from './interfaces'
 
-export class Employee implements EmployeeTypes {
-  public name
-  public cpf
+export class Employee extends Person implements EmployeeTypes {
   public entryDate
   public cltNumber
   public salary
@@ -25,10 +25,11 @@ export class Employee implements EmployeeTypes {
     role,
     level,
     benefits,
-    phone
+    phone,
+    id
   }: EmployeeTypes) {
-    this.name = name
-    this.cpf = cpf
+    super({ cpf, name, id })
+
     this.entryDate = entryDate
     this.cltNumber = cltNumber
     this.salary = salary
@@ -47,5 +48,9 @@ export class Employee implements EmployeeTypes {
         this.jobStatus = foundJobStatus.id
       }
     }
+  }
+
+  addToSalary(salaryToAdd: number) {
+    this.salary += salaryToAdd
   }
 }
