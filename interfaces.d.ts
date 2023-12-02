@@ -1,3 +1,5 @@
+import { Vacancy } from "./Vacancy"
+
 export interface PersonTypes {
   name: string
   cpf: string

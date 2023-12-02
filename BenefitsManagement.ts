@@ -1,104 +1,151 @@
-// import { DATABASE_BENEFITS } from './constants'
+import { Benefit } from './Benefit'
+import { File as FileClass } from './File'
+import { Keyboard as KeyboardClass } from './Keyboard'
+import { Management } from './Management'
+import { createInitialText } from './utils/text'
+import { DATABASE_BENEFITS } from './constants'
+import { BenefitTypes } from './interfaces'
 
-// import { BenefitTypes } from './interfaces'
+const file = new FileClass()
+const Keyboard = new KeyboardClass()
 
-// import { File as FileClass } from './File'
-// import { Keyboard as KeyboardClass } from './Keyboard'
+export class BenefitsManagement extends Management {
+  update() {
+    this.list();
 
-// import { Benefit } from './Benefit'
+    const benefitNameToEdit = Keyboard.read(
+      createInitialText('Nome do benefício a ser modificado')
+    );
 
-// const createInitialText = (param: string) => `Digite ${param}: `
+    // Buscar o benefício escolhido na lista
+    const benefitToEdit = this.getSingleBenefit(benefitNameToEdit);
 
-// const File = new FileClass()
-// const Keyboard = new KeyboardClass()
-// export class RhManager {
-//   EditBenefits() {
-//     // Listar todos os beneficios
-//     // A pessoas vai escolher 1 beneficio
-//     // Vai adicionar todas as informações novamente
-//     // mensagem: nome atual = ferias:
-//     //digite o novo nome:
-//     // Criar nova lista com o beneficio atualizado
-//     // const novaListadeBeneficios = benefits.map(currentBenefit => {
-//     //   if(currentBenefit.name !== editedBenefit) {
-//     //     return currentBenefit
-//     //   }
-//     //   return editedBenefit
-//     // })
-//     // Escrevar lista de beneficios para o arquivo
-//   }
+    if (!benefitToEdit) {
+      console.log('Benefício não encontrado.');
+      return;
+    }
 
-//   addBenefit() {
-//     const name = Keyboard.read(createInitialText('Nome'))
-//     const value = Keyboard.readNumber(createInitialText('Valor'))
-//     const description = Keyboard.read(createInitialText('Descrição'))
+    // Exibir valor atual do benefício
+    console.log(`Valor atual do benefício ${benefitToEdit.name}: ${benefitToEdit.value}`);
 
-//     const newBenefit = new Benefit({ description, name, value })
+    // Obter novo valor do usuário
+    const newBenefitValue = Keyboard.readNumber(createInitialText('o novo valor do benefício'));
 
-//     const currentBenefits = File.readJSON(DATABASE_BENEFITS)
+    // Criar um novo benefício com o valor atualizado
+    const updatedBenefit: BenefitTypes = {
+      ...benefitToEdit,
+      value: newBenefitValue,
+    };
 
-//     let newBenefits = [newBenefit]
+    // Atualizar o valor do benefício na lista
+    const updatedBenefitsList = this.updateBenefitInList(DATABASE_BENEFITS, benefitToEdit, updatedBenefit);
 
-//     if (currentBenefits) {
-//       newBenefits = [...currentBenefits, newBenefit]
-//     }
+    // Escrever a lista de benefícios atualizada para o arquivo
+    file.write({ fileName: DATABASE_BENEFITS, data: updatedBenefitsList });
 
-//     File.write({ fileName: DATABASE_BENEFITS, data: newBenefits })
-//   }
+    console.log(`Valor do benefício ${benefitToEdit.name} atualizado com sucesso!`);
+  }
 
-//   listBenefits() {
-//     const benefits = File.readJSON(DATABASE_BENEFITS)
+  // Método auxiliar para atualizar o benefício na lista
+  private updateBenefitInList(benefitsFileName: string, oldBenefit: BenefitTypes, updatedBenefit: BenefitTypes): BenefitTypes[] {
+    const currentBenefitsList = file.readJSON(benefitsFileName);
 
-//     if (!benefits) {
-//       console.log('Não há beneficios cadastrados')
-//       return
-//     }
+    if (!currentBenefitsList) {
+      console.log('Lista de benefícios não encontrada.');
+      return [];
+    }
 
-//     benefits.forEach((currentBenefit: BenefitTypes) => {
-//       console.log(
-//         `${currentBenefit.name} - ${Intl.NumberFormat('pt-BR', {
-//           style: 'currency',
-//           currency: 'BRL'
-//         }).format(currentBenefit.value)}`
-//       )
-//     })
-//   }
+    const updatedBenefitsList = currentBenefitsList.map((currentBenefit: BenefitTypes) => {
+      if (currentBenefit.name !== oldBenefit.name) {
+        return currentBenefit;
+      }
 
-//   DeleteBenefits() {
-//     const benefits = File.readJSON(DATABASE_BENEFITS)
+      return updatedBenefit;
+    });
 
-//     if (!benefits) {
-//       console.log('Não há benefícios cadastrados')
-//       return
-//     }
+    return updatedBenefitsList;
+  }
 
-//     console.log('Benefícios Disponíveis:')
-//     benefits.forEach((benefit: BenefitTypes, index: number) => {
-//       console.log(`${index + 1}. ${benefit.name}`)
-//     })
+  // Método auxiliar para obter um benefício específico da lista
+  private getSingleBenefit(benefitName: string): BenefitTypes | undefined {
+    const benefitsList = file.readJSON(DATABASE_BENEFITS);
 
-//     const choice = Keyboard.readNumber(
-//       'Escolha o benefício para excluir (digite o número): '
-//     )
+    const foundBenefit = benefitsList.find((currentBenefit: BenefitTypes) => {
+      return currentBenefit.name.toLowerCase() === benefitName.toLowerCase().trim();
+    });
 
-//     if (isNaN(choice) || choice <= 0 || choice > benefits.length) {
-//       console.log('Escolha inválida.')
-//       return
-//     }
+    return foundBenefit;
+  }
 
-//     const benefitToDelete: BenefitTypes = benefits[choice - 1]
-//     const updatedBenefits = benefits.filter(
-//       (benefit: BenefitTypes) => benefit.name !== benefitToDelete.name
-//     )
+  add() {
+    const name = Keyboard.read(createInitialText('Nome'))
+    const value = Keyboard.readNumber(createInitialText('Valor'))
+    const description = Keyboard.read(createInitialText('Descrição'))
 
-//     File.write({ fileName: DATABASE_BENEFITS, data: updatedBenefits })
-//     console.log(
-//       `O benefício "${benefitToDelete.name}" foi excluído com sucesso.`
-//     )
-//   }
-// }
+    const newBenefit = new Benefit({ description, name, value })
 
-export class BenefitsManagement {
-  add() {}
-  delete() {}
-}
+    const currentBenefits = file.readJSON(DATABASE_BENEFITS)
+
+    let newBenefits = [newBenefit]
+
+    if (currentBenefits) {
+      newBenefits = [...currentBenefits, newBenefit]
+    }
+
+    file.write({ fileName: DATABASE_BENEFITS, data: newBenefits })
+  }
+
+  list() {
+    const benefits = file.readJSON(DATABASE_BENEFITS)
+
+    if (!benefits) {
+      console.log('Não há beneficios cadastrados')
+      return
+    }
+
+    benefits.forEach((currentBenefit: BenefitTypes) => {
+      console.log(
+        `${currentBenefit.name} - ${Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL'
+        }).format(currentBenefit.value)}`
+      )
+    })
+  }
+
+  delete() {
+    const benefits = file.readJSON(DATABASE_BENEFITS)
+
+     if (!benefits) {
+       console.log('Não há benefícios cadastrados')
+       return
+     }
+
+     console.log('Benefícios Disponíveis:')
+     benefits.forEach((benefit: BenefitTypes, index: number) => {
+       console.log(`${index + 1}. ${benefit.name}`)
+     })
+
+     const choice = Keyboard.readNumber(
+       'Escolha o benefício para excluir (digite o número): '
+     )
+
+     if (isNaN(choice) || choice <= 0 || choice > benefits.length) {
+       console.log('Escolha inválida.')
+       return
+     }
+
+     const benefitToDelete: BenefitTypes = benefits[choice - 1]
+     const updatedBenefits = benefits.filter(
+       (benefit: BenefitTypes) => benefit.name !== benefitToDelete.name
+     )
+
+     file.write({ fileName: DATABASE_BENEFITS, data: updatedBenefits })
+     console.log(
+       `O benefício "${benefitToDelete.name}" foi excluído com sucesso.`
+     )
+   }
+ }
+ 
+
+   

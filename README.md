@@ -6,8 +6,8 @@
 
 ✅ Create
 ✅ Read
-❌ Update - Natália
-❌ Delete - Natália
+✅ Update - Natália
+✅ Delete - Natália
 
 ### Sectors
 
@@ -26,6 +26,8 @@
 
 ✅ Create
 ✅ Read
+❌ Update - Natália
+❌ Delete - Natália
 
 ## Commands
 

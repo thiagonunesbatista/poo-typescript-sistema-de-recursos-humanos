@@ -3,7 +3,7 @@ import { ProgramMenu } from './ProgramMenu'
 import { EmployeesManagement as EmployeesManagementClass } from './EmployeesManagement'
 import { SectorsManagement as SectorsManagementClass } from './SectorsManagement'
 import { VacanciesManagement as VacanciesManagementClass } from './VacanciesManagement'
-// import { BenefitsManagement as BenefitsManagementClass } from './BenefitsManagement'
+import { BenefitsManagement as BenefitsManagementClass } from './BenefitsManagement'
 
 const Menu = new ProgramMenu()
 
@@ -13,10 +13,10 @@ const exitProgram = () => {
   isProgramExecuting = false
 }
 
+const benefitsManagement = new BenefitsManagementClass()
 const sectorsManagement = new SectorsManagementClass()
 const employeesManagement = new EmployeesManagementClass()
 const vacanciesManagement = new VacanciesManagementClass()
-// const benefitsManagement = new BenefitsManagementClass()
 
 while (isProgramExecuting) {
   Menu.show()
@@ -39,40 +39,40 @@ while (isProgramExecuting) {
     case 5:
       employeesManagement.update()
       break
-    // case 10:
-    //   benefitsManagement.add()
-    //   break
-    // case 11:
-    //   benefitsManagement.list()
-    //   break
-    // case 12:
-    //   benefitsManagement.edit()
-    //   break
-    // case 13:
-    //   benefitsManagement.delete()
-    //   break
-    case 20:
+     case 6:
+       benefitsManagement.add()
+       break
+     case 7:
+       benefitsManagement.list()
+       break
+     case 8:
+       benefitsManagement.update()
+       break
+    case 9:
+      benefitsManagement.delete()
+      break
+    case 10:
       sectorsManagement.add()
       break
-    case 21:
+    case 11:
       sectorsManagement.list()
       break
-    case 22:
+    case 12:
       sectorsManagement.update()
       break
-    case 23:
+    case 13:
       sectorsManagement.delete()
       break
-    case 30:
+    case 14:
       vacanciesManagement.add()
       break
-    case 31:
+    case 15:
       vacanciesManagement.list()
       break
-    //case 32:
-    // manager.editVacancies()
-    // break
-    case 99:
+    case 16:
+      vacanciesManagement.delete()
+     break
+    case 17:
     default:
       exitProgram()
       break

@@ -23,4 +23,7 @@ export class Vacancy implements VacancyType {
     this.status = status
     this.expirationDate = expirationDate
   }
+
+
+ 
 }

@@ -2,7 +2,7 @@ import { Vacancy } from './Vacancy'
 import { File as FileClass } from './File'
 import { Keyboard as KeyboardClass } from './Keyboard'
 import { SectorsManagement as SectorsManagementClass } from './SectorsManagement'
-
+import { Management } from './Management'
 import { DATABASE_VACANCIES } from './constants'
 
 import { VacancyType } from './interfaces'
@@ -12,7 +12,7 @@ const file = new FileClass()
 const Keyboard = new KeyboardClass()
 const sectorsManagement = new SectorsManagementClass()
 
-export class VacanciesManagement {
+export class VacanciesManagement extends Management {
   list() {
     const vacancies = file.readJSON(DATABASE_VACANCIES)
 
@@ -70,4 +70,67 @@ export class VacanciesManagement {
 
     this.writeVacancyToFile(newVacancy)
   }
+
+
+
+  delete() {
+    this.list();
+
+    const roleNameToDelete = Keyboard.read(
+      createInitialText('Nome do cargo da vaga a ser excluída')
+    );
+
+    const vacancyToDelete = this.getSingleVacancy(roleNameToDelete);
+
+    if (!vacancyToDelete) {
+      console.log('Vaga não encontrada.');
+      return;
+    }
+
+    // Exibir informações sobre a vaga antes de excluir
+    console.log('\nInformações da vaga a ser excluída:');
+    console.log('-------------------------------------');
+    console.log(`Cargo: ${vacancyToDelete.roleName}`);
+    console.log(`Descrição: ${vacancyToDelete.description}`);
+    console.log(`Quantidade: ${vacancyToDelete.quantity}\n`);
+
+    const confirmDeletion = Keyboard.readNumber(
+      createInitialText('Digite 1 para confirmar a exclusão ou 2 para cancelar')
+    );
+
+    if (confirmDeletion === 1) {
+      const updatedVacancies = this.deleteVacancyFromFile(vacancyToDelete);
+      console.log('Vaga excluída com sucesso.');
+    } else {
+      console.log('Exclusão cancelada.');
+    }
+  }
+
+  private deleteVacancyFromFile(vacancyToDelete: VacancyType): VacancyType[] {
+    const currentVacancyList = file.readJSON(DATABASE_VACANCIES);
+
+    const updatedVacanciesList = currentVacancyList.filter(
+      (current: VacancyType) => {
+        return current.roleName !== vacancyToDelete.roleName;
+      }
+    );
+
+    file.write({ fileName: DATABASE_VACANCIES, data: updatedVacanciesList });
+
+    return updatedVacanciesList;
+  }
+
+  private getSingleVacancy(roleName: string): Vacancy | undefined {
+    const vacanciesList = file.readJSON(DATABASE_VACANCIES);
+
+    const foundVacancy = vacanciesList.find(
+      (currentVacancy: VacancyType) => {
+        return currentVacancy.roleName.toLowerCase() === roleName.toLowerCase().trim();
+      }
+    );
+
+    return foundVacancy;
+  } 
+  
+  update() {/* inicializada */}
 }
