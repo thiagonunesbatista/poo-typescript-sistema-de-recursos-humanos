@@ -9,6 +9,7 @@ import { DATABASE_SECTORS } from './constants'
 import { createInitialText } from './utils/text'
 
 import { SectorTypes } from './interfaces'
+import { Employee } from './Employee'
 
 const file = new FileClass()
 
@@ -92,9 +93,9 @@ export class SectorsManagement extends Management {
 
     this.list()
 
-    const name = Keyboard.read(createInitialText('Nome do setor'))
+    const nameToUpdate = Keyboard.read(createInitialText('Nome do setor'))
 
-    const sectorToUpdate = this.getSingleSector(name)
+    const sectorToUpdate = this.getSingleSector(nameToUpdate)
 
     const newName = Keyboard.read(createInitialText('Novo Nome'))
 
@@ -106,7 +107,35 @@ export class SectorsManagement extends Management {
 
     const managerName = Keyboard.read('Nome do Gerente: ')
 
-    const newManager = employeesManagement.getSingleEmployee(managerName)
+    const {
+      _cpf: cpf,
+      _name: name,
+      _jobStatus: jobStatus,
+      _role: role,
+      _level: level,
+      _cltNumber: cltNumber,
+      _entryDate: entryDate,
+      _sector: sector,
+      _phone: phone,
+      _salary: salary,
+      _id: id,
+      _benefits: benefits
+    } = employeesManagement.getSingle(managerName)
+
+    const newManager = new Employee({
+      name,
+      cpf,
+      entryDate,
+      salary,
+      cltNumber,
+      level,
+      sector,
+      role,
+      benefits,
+      phone,
+      jobStatus,
+      id
+    })
 
     const updatedSectorInstance = new Sector({
       ...sectorToUpdate,

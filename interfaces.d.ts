@@ -38,10 +38,10 @@ export type ExperienceLevelType = {
 }
 
 export type VacancyType = {
-  quantity: number
-  sector: SectorTypes
-  roleName: string
-  expirationDate?: Date
-  description: string
-  status: number
+  _quantity: number
+  _sector: Sector
+  _roleName: string
+  _expirationDate: Date
+  _description: string
+  _status: number
 }
