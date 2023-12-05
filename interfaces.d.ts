@@ -1,21 +1,22 @@
-import { Vacancy } from "./Vacancy"
+import { Employee } from './Employee'
+import { Vacancy } from './Vacancy'
 
-export interface PersonTypes {
-  name: string
-  cpf: string
-  id: string
+export type PersonTypes = {
+  _name: string
+  _cpf: string
+  _id: string
 }
 
 export interface EmployeeTypes extends PersonTypes {
-  entryDate: Date
-  salary: number
-  cltNumber: string
-  sector: SectorTypes
-  role: string
-  level: string
-  benefits: BenefitTypes[]
-  phone: string
-  jobStatus: number
+  _entryDate: Date
+  _salary: number
+  _cltNumber: string
+  _sector: SectorTypes
+  _role: string
+  _level: string
+  _benefits: BenefitTypes[]
+  _phone: string
+  _jobStatus: number
 }
 
 export interface BenefitTypes {
@@ -26,7 +27,7 @@ export interface BenefitTypes {
 
 export interface SectorTypes {
   name: string
-  manager?: EmployeeTypes
+  manager?: Employee
   employeesQuantity: number
   id: string
 }

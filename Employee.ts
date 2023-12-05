@@ -1,18 +1,18 @@
 import { Person } from './Person'
 
 import { JOB_STATUS } from './constants'
-import { EmployeeTypes } from './interfaces'
+import { BenefitTypes, SectorTypes } from './interfaces'
 
-export class Employee extends Person implements EmployeeTypes {
-  public entryDate
-  public cltNumber
-  public salary
-  public jobStatus = 1
-  public sector
-  public role
-  public level
-  public benefits
-  public phone
+export class Employee extends Person {
+  private _entryDate: Date
+  private _cltNumber: string
+  private _salary: number
+  private _jobStatus: number = 1
+  private _sector: SectorTypes
+  private _role: string
+  private _level: string
+  private _benefits: BenefitTypes[]
+  private _phone: string
 
   constructor({
     cpf,
@@ -27,17 +27,30 @@ export class Employee extends Person implements EmployeeTypes {
     benefits,
     phone,
     id
-  }: EmployeeTypes) {
+  }: {
+    entryDate: Date
+    salary: number
+    cltNumber: string
+    sector: SectorTypes
+    role: string
+    level: string
+    benefits: BenefitTypes[]
+    phone: string
+    jobStatus: number
+    name: string
+    cpf: string
+    id: string
+  }) {
     super({ cpf, name, id })
 
-    this.entryDate = entryDate
-    this.cltNumber = cltNumber
-    this.salary = salary
-    this.sector = sector
-    this.role = role
-    this.level = level
-    this.benefits = benefits
-    this.phone = phone
+    this._entryDate = entryDate
+    this._cltNumber = cltNumber
+    this._salary = salary
+    this._sector = sector
+    this._role = role
+    this._level = level
+    this._benefits = benefits
+    this._phone = phone
 
     if (!jobStatus) {
       const foundJobStatus = JOB_STATUS.find(
@@ -45,12 +58,48 @@ export class Employee extends Person implements EmployeeTypes {
       )
 
       if (foundJobStatus) {
-        this.jobStatus = foundJobStatus.id
+        this._jobStatus = foundJobStatus.id
       }
     }
   }
 
+  public get entryData(): Date {
+    return this._entryDate
+  }
+
+  public get cltNumber(): string {
+    return this._cltNumber
+  }
+
+  public get salary(): number {
+    return this._salary
+  }
+
+  public get jobStatus(): number {
+    return this._jobStatus
+  }
+
+  public get sector(): SectorTypes {
+    return this._sector
+  }
+
+  public get role(): string {
+    return this._role
+  }
+
+  public get level(): string {
+    return this._level
+  }
+
+  public get benefits(): BenefitTypes[] {
+    return this._benefits
+  }
+
+  public get phone(): string {
+    return this._phone
+  }
+
   addToSalary(salaryToAdd: number) {
-    this.salary += salaryToAdd
+    this._salary += salaryToAdd
   }
 }

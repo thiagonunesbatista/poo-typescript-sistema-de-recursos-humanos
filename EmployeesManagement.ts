@@ -21,7 +21,38 @@ export class EmployeesManagement extends Management {
       createInitialText('Nome do empregado a aumentar salário')
     )
 
-    const employeeInstance = this.getSingleEmployee(employeeNameToRaiseSalary)
+    const aux = this.getSingle(employeeNameToRaiseSalary)
+
+    const {
+      _cpf: cpf,
+      _name: name,
+      _jobStatus: jobStatus,
+      _role: role,
+      _level: level,
+      _cltNumber: cltNumber,
+      _entryDate: entryDate,
+      _sector: sector,
+      _phone: phone,
+      _salary: salary,
+      _id: id,
+      _benefits: benefits
+    } = aux
+
+    const employeeInstance = new Employee({
+      name,
+      cpf,
+      entryDate,
+      salary,
+      cltNumber,
+      level,
+      sector,
+      role,
+      benefits,
+      phone,
+      jobStatus,
+      id
+    })
+
     const raiseOption = Keyboard.readNumber(
       'Porcentagem a aumentar:\n1 - 5%\n2  - 10%\n3 - 20%\n'
     )
@@ -118,15 +149,43 @@ export class EmployeesManagement extends Management {
       createInitialText('Nome do empregado a atualizar')
     )
 
-    const employeeToUpdate = this.getSingleEmployee(employeeNameToUpdate)
+    const {
+      _cpf: cpf,
+      _name: name,
+      _jobStatus: jobStatus,
+      _role: role,
+      _level: level,
+      _cltNumber: cltNumber,
+      _entryDate: entryDate,
+      _sector: sector,
+      _phone: phone,
+      _salary: salary,
+      _id: id,
+      _benefits: benefits
+    } = this.getSingle(employeeNameToUpdate)
 
-    const updatedEmployee = this.createEmployeeFromInput()
+    const employeeInstance = new Employee({
+      name,
+      cpf,
+      entryDate,
+      salary,
+      cltNumber,
+      level,
+      sector,
+      role,
+      benefits,
+      phone,
+      jobStatus,
+      id
+    })
 
-    const oldId = employeeToUpdate.id
+    let updatedEmployee = this.createEmployeeFromInput()
 
-    const newEmployee = new Employee({ ...updatedEmployee, id: oldId })
+    const oldId = employeeInstance.id
 
-    this.replaceOnFile(newEmployee)
+    updatedEmployee.id = oldId
+
+    this.replaceOnFile(updatedEmployee)
   }
 
   add() {
@@ -135,12 +194,12 @@ export class EmployeesManagement extends Management {
     this.addEmployeeToFileEnd(newEmployee)
   }
 
-  private replaceOnFile(employee: EmployeeTypes) {
+  private replaceOnFile(employee: Employee) {
     const currentEmployeeList = file.readJSON(DATABASE_EMPLOYEES)
 
     const newEmployeesList = currentEmployeeList.map(
       (current: EmployeeTypes) => {
-        if (current.id !== employee.id) {
+        if (current._id !== employee.id) {
           return current
         }
 
@@ -151,7 +210,7 @@ export class EmployeesManagement extends Management {
     file.write({ fileName: DATABASE_EMPLOYEES, data: newEmployeesList })
   }
 
-  private addEmployeeToFileEnd(newEmployee: EmployeeTypes) {
+  private addEmployeeToFileEnd(newEmployee: Employee) {
     const currentEmployeeList = file.readJSON(DATABASE_EMPLOYEES)
 
     let newEmployeesList = [newEmployee]
@@ -163,12 +222,12 @@ export class EmployeesManagement extends Management {
     file.write({ fileName: DATABASE_EMPLOYEES, data: newEmployeesList })
   }
 
-  private deleteEmployeeFromFile(employeeToFire: EmployeeTypes) {
+  private deleteEmployeeFromFile(employeeToFire: Employee) {
     const currentEmployeeList = file.readJSON(DATABASE_EMPLOYEES)
 
     const newEmployeesList = currentEmployeeList.filter(
       (current: EmployeeTypes) => {
-        if (current.name !== employeeToFire.name) {
+        if (current._name !== employeeToFire.name) {
           return current
         }
       }
@@ -186,8 +245,37 @@ export class EmployeesManagement extends Management {
     }
 
     employeesList.forEach((currentEmployee: EmployeeTypes) => {
+      const {
+        _cpf: cpf,
+        _name: name,
+        _jobStatus: jobStatus,
+        _role: role,
+        _level: level,
+        _cltNumber: cltNumber,
+        _entryDate: entryDate,
+        _sector: sector,
+        _phone: phone,
+        _salary: salary,
+        _id: id
+      } = currentEmployee
+
+      const employeeInstance = new Employee({
+        name,
+        cpf,
+        entryDate,
+        salary,
+        cltNumber,
+        level,
+        sector,
+        role,
+        benefits: [],
+        phone,
+        jobStatus,
+        id
+      })
+
       console.log(
-        `Nome: ${currentEmployee.name}\nCargo: ${currentEmployee.role}\n\n`
+        `Nome: ${employeeInstance.name}\nCargo: ${employeeInstance.role}\n\n`
       )
     })
   }
@@ -199,25 +287,84 @@ export class EmployeesManagement extends Management {
       createInitialText('Nome do empregado a demitir')
     )
 
-    const employeeInstanceToFire = this.getSingleEmployee(employeeNameToFire)
+    const {
+      _cpf: cpf,
+      _name: name,
+      _jobStatus: jobStatus,
+      _role: role,
+      _level: level,
+      _cltNumber: cltNumber,
+      _entryDate: entryDate,
+      _sector: sector,
+      _phone: phone,
+      _salary: salary,
+      _id: id,
+      _benefits: benefits
+    } = this.getSingle(employeeNameToFire)
 
-    this.deleteEmployeeFromFile(employeeInstanceToFire)
+    const employeeInstance = new Employee({
+      name,
+      cpf,
+      entryDate,
+      salary,
+      cltNumber,
+      level,
+      sector,
+      role,
+      benefits,
+      phone,
+      jobStatus,
+      id
+    })
+
+    this.deleteEmployeeFromFile(employeeInstance)
   }
 
-  getSingleEmployee(employeeName: string) {
+  getSingle(employeeName: string): EmployeeTypes {
     const employeesList = file.readJSON(DATABASE_EMPLOYEES)
 
     const foundEmployee = employeesList.find(
       (currentEmployee: EmployeeTypes) => {
+        const {
+          _cpf: cpf,
+          _name: name,
+          _jobStatus: jobStatus,
+          _role: role,
+          _level: level,
+          _cltNumber: cltNumber,
+          _entryDate: entryDate,
+          _sector: sector,
+          _phone: phone,
+          _salary: salary,
+          _id: id
+        } = currentEmployee
+
+        const aux = {
+          name,
+          cpf,
+          entryDate,
+          salary,
+          cltNumber,
+          level,
+          sector,
+          role,
+          benefits: [],
+          phone,
+          jobStatus,
+          id
+        }
+
+        const employeeInstance = new Employee(aux)
+
         if (
-          currentEmployee.name.toLowerCase() ===
+          employeeInstance.name.toLowerCase() ===
           employeeName.toLowerCase().trim()
         ) {
-          return currentEmployee
+          return employeeInstance
         }
       }
     )
 
-    return new Employee(foundEmployee)
+    return foundEmployee
   }
 }
